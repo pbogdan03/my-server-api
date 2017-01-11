@@ -1,0 +1,24 @@
+{
+  "name": "bogdanp-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --harmony-async-await index"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "author": "Bogdan Pestritu",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "css-color-names": "0.0.4",
+    "express": "^4.14.0",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7"
+  }
+}
