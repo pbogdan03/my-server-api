@@ -13,7 +13,7 @@ const app = express();
 app.set('port', (process.env.PORT || 3000));
 
 app.use(cors({
-  origin: 'https://bogdanp.gitlab.io',
+  origin: ['https://bogdanp.gitlab.io', 'http://localhost:3000'],
   optionsSuccessStatus: 200
 }));
 app.use('/', express.static(path.join(__dirname, 'public')));
