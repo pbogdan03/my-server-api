@@ -123,6 +123,22 @@ app.get('/api/voting', (req, res) => {
   });
 });
 
+app.put('/api/voting', (req, res) => {
+  fs.readFile(VOTING_DATA_FILE, (err, data) => {
+    const products = JSON.parse(data);
+    products.forEach((product) => {
+      if (product.id === req.body.id) {
+        product.votes = req.body.votes;
+      }
+    });
+    fs.writeFile(VOTING_DATA_FILE, JSON.stringify(products, null, 4), () => {
+      res.setHeader('Cache-Control', 'no-cache');
+      res.json({});
+      res.end();
+    });
+  });
+});
+
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
