@@ -13,11 +13,11 @@ const app = express();
 app.set('port', (process.env.PORT || 3000));
 
 app.use('*', function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', ['https://bogdanp.gitlab.io', 'http://localhost:3000']);
+  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.setHeader('Cache-Control', 'no-cache');
   res.writeHead(200, {'Content-Type': 'text/html'});
-  res.header('Access-Control-Allow-Origin', ['https://bogdanp.gitlab.io', 'http://localhost:3000']);
-  res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,POST');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Cache-Control', 'no-cache');
   next();
 });
 
