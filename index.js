@@ -12,7 +12,7 @@ const app = express();
 
 app.set('port', (process.env.PORT || 3000));
 
-const whitelist = ['https://bogdanp.gitlab.io', 'http://localhost:3000'];
+const whitelist = ['https://bogdanp.gitlab.io', 'http://localhost:3000', 'http://192.168.0.101:3000'];
 const corsOptions = {
   origin: function (origin, callback) {
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1
