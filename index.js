@@ -12,19 +12,17 @@ const app = express();
 
 app.set('port', (process.env.PORT || 3000));
 
-app.use('*', function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', ['https://bogdanp.gitlab.io', 'http://localhost:3000']);
-  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,GET,POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  next();
-});
+const whitelist = ['https://bogdanp.gitlab.io', 'http://localhost:3000'];
+const corsOptions = {
+  origin: function (origin, callback) {
+    var originIsWhitelisted = whitelist.indexOf(origin) !== -1
+    callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted)
+  },
+  optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions));
+app.options('*', cors());
 
-// app.use(cors({
-//   origin: ['https://bogdanp.gitlab.io', 'http://localhost:3000'],
-//   optionsSuccessStatus: 200
-// }));
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
