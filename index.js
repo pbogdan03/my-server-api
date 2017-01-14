@@ -12,6 +12,15 @@ const app = express();
 
 app.set('port', (process.env.PORT || 3000));
 
+app.use('*', function(req, res, next) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.header('Access-Control-Allow-Origin', ['https://bogdanp.gitlab.io', 'http://localhost:3000']);
+  res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,POST');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Cache-Control', 'no-cache');
+  next();
+});
+
 // app.use(cors({
 //   origin: ['https://bogdanp.gitlab.io', 'http://localhost:3000'],
 //   optionsSuccessStatus: 200
@@ -20,17 +29,8 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use('*', function(req, res, next) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.header('Access-Control-Allow-Origin', ['https://bogdanp.gitlab.io', 'http://localhost:3000']);
-  res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,POST');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
 app.get('/api/timers', (req, res) => {
   fs.readFile(TIMER_DATA_FILE, (err, data) => {
-    res.setHeader('Cache-Control', 'no-cache');
     res.json(JSON.parse(data));
   });
 });
@@ -47,7 +47,6 @@ app.post('/api/timers', (req, res) => {
     };
     timers.push(newTimer);
     fs.writeFile(TIMER_DATA_FILE, JSON.stringify(timers, null, 4), () => {
-      res.setHeader('Cache-Control', 'no-cache');
       res.json(timers);
     });
   });
@@ -62,7 +61,6 @@ app.post('/api/timers/start', (req, res) => {
       }
     });
     fs.writeFile(TIMER_DATA_FILE, JSON.stringify(timers, null, 4), () => {
-      res.setHeader('Cache-Control', 'no-cache');
       res.json({});
       res.end();
     });
@@ -80,7 +78,6 @@ app.post('/api/timers/stop', (req, res) => {
       }
     });
     fs.writeFile(TIMER_DATA_FILE, JSON.stringify(timers, null, 4), () => {
-      res.setHeader('Cache-Control', 'no-cache');
       res.json({});
       res.end();
     });
@@ -97,7 +94,6 @@ app.put('/api/timers', (req, res) => {
       }
     });
     fs.writeFile(TIMER_DATA_FILE, JSON.stringify(timers, null, 4), () => {
-      res.setHeader('Cache-Control', 'no-cache');
       res.json({});
       res.end();
     });
@@ -115,7 +111,6 @@ app.delete('/api/timers', (req, res) => {
       }
     }, []);
     fs.writeFile(TIMER_DATA_FILE, JSON.stringify(timers, null, 4), () => {
-      res.setHeader('Cache-Control', 'no-cache');
       res.json({});
       res.end();
     });
@@ -125,7 +120,6 @@ app.delete('/api/timers', (req, res) => {
 app.get('/api/voting', (req, res) => {
   Data.renewVotingData(() => {
     fs.readFile(VOTING_DATA_FILE, (err, data) => {
-      res.setHeader('Cache-Control', 'no-cache');
       res.json(JSON.parse(data));
     });
   });
